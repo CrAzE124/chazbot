@@ -1,5 +1,4 @@
-import requests
-import time
+import requests, time, sys
 from faker import Factory
 from random import randint
 
@@ -60,6 +59,7 @@ def run():
 
     registration_cookie_jar = None
 
+    # Because redirects
     for hist in registration.history:
         if len(hist.cookies) > 0:
             registration_cookie_jar = hist.cookies
@@ -78,7 +78,14 @@ def run():
 
 
 if __name__ == '__main__':
-    for i in range(5):
+    times_to_run = sys.argv[-1]
+
+    try:
+        times_to_run = int(times_to_run)
+    except ValueError:
+        times_to_run = 5
+
+    for i in range(times_to_run):
         try:
             run()
             time.sleep(randint(5, 10))
